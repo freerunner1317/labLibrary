@@ -82,7 +82,7 @@
 			<select class="box" id="box" name="book_name" value="">
 				<?
 				    foreach ($books as $key => $value) {
-				    	echo "<option value='$value[0]'>$value[1]</option>";	
+				    	echo "<option value='$value[0]/$value[2]'>$value[1]</option>";	
 				    }	   	 		   		
 				?>
 			</select>
