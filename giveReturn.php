@@ -28,6 +28,19 @@
 
 		if (isset($_POST['student'])){
 			echo $_POST['book_name'];
+			$date = date("Y-m-d");
+
+			$query ="INSERT INTO `library`.`books_out` (`data`, `id_book`, `id_students`) 
+					 VALUES ('$date', '2', '{$_POST['student']}');";
+
+			echo $query;		 
+			//$result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
+
+			if ($result) {
+		      echo '<p>Данные успешно добавлены в таблицу.</p>';
+		    } else {
+		      echo '<p>Произошла ошибка: ' . mysqli_error($link) . '</p>';
+		    }
 		}	
 		// выполняем операции с базой данных
 		$query ="SELECT id, first_name, second_name, students.group 
@@ -75,7 +88,7 @@
 			<select class="box" id="box" name="student" value="">
 				<?
 				    foreach ($students as $key => $value) {
-				    	echo "<option value='$value[0]'>$value[1] $value[2] $value[3] $value[4]</option>";	
+				    	echo "<option value='$value[0]'>$value[1] $value[2]; $value[3] Группа</option>";	
 				    }	   	 		   		
 				?>
 			</select>
