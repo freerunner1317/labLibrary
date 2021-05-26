@@ -1,0 +1,56 @@
+body {
+  font: 13px "Lucida Grande", Tahoma, Verdana, sans-serif;
+}
+
+.table {
+	width: 100%;
+	margin-bottom: 20px;
+	border: 5px solid #fff;
+	border-top: 5px solid #fff;
+	border-bottom: 3px solid #fff;
+	border-collapse: collapse; 
+	outline: 3px solid #ffd300;
+	background: #faff78;
+	font-size: 15px;
+}
+.table th {
+	font-weight: bold;
+	padding: 7px;
+	background: #ffd300;
+	border: none;
+	text-align: left;
+	border-top: 3px solid #fff;
+	border-bottom: 3px solid #ffd300;
+}
+.table td {
+	padding: 7px;
+	border: none;
+	border-top: 3px solid #fff;
+	border-bottom: 3px solid #fff;
+}
+.table tbody tr:nth-child(even){
+	background: #faff78;
+}
+.box {
+	 text-align: center;
+	  width: 350px;
+	  height: 30px;
+	  border: 1px solid #999;
+	  font-size: 18px;
+	  color: #1c87c9;
+	  background-color: #eee;
+	  border-radius: 5px;
+
+}
+.selectBox{
+	margin-top: 100px;
+	text-align: center;
+	width: 100%;
+
+}
+
+.insertStudent{
+	margin-top: 50px;
+	text-align: center;
+	width: 100%;
+}
