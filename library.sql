@@ -36,7 +36,7 @@ CREATE TABLE `books` (
 
 LOCK TABLES `books` WRITE;
 /*!40000 ALTER TABLE `books` DISABLE KEYS */;
-INSERT INTO `books` VALUES (1,'Как захватить мир быстро','10'),(2,'Как быть лучшим','10'),(3,'Как не быть не скучным','10'),(4,'Цена успеха','2');
+INSERT INTO `books` VALUES (1,'Как захватить мир быстро','3'),(2,'Как быть лучшим','3'),(3,'Как не быть не скучным','3'),(4,'Цена успеха','10');
 /*!40000 ALTER TABLE `books` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -53,7 +53,7 @@ CREATE TABLE `books_out` (
   `id_book` varchar(45) NOT NULL,
   `id_students` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -62,7 +62,6 @@ CREATE TABLE `books_out` (
 
 LOCK TABLES `books_out` WRITE;
 /*!40000 ALTER TABLE `books_out` DISABLE KEYS */;
-INSERT INTO `books_out` VALUES (1,'2022-05-20','1','1'),(2,'2021-04-21','1','1'),(3,'2021-01-01','2','3'),(4,'2021-01-03','3','2'),(5,'2021-01-06','4','4');
 /*!40000 ALTER TABLE `books_out` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -80,7 +79,7 @@ CREATE TABLE `students` (
   `group` int NOT NULL,
   `record_book` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -89,7 +88,7 @@ CREATE TABLE `students` (
 
 LOCK TABLES `students` WRITE;
 /*!40000 ALTER TABLE `students` DISABLE KEYS */;
-INSERT INTO `students` VALUES (1,'Петр','Самоделкин',234,'123123'),(2,'Евкакий','Быстрый',345,'123123'),(3,'Мирослав','Текучий',342,'123123'),(4,'Сход','Прыгучий',567,'234345'),(5,'Павел','Липкий',566,'456355'),(6,'Михаил','Грязный',455,'455455'),(11,'Антон','Песков',456,'345345');
+INSERT INTO `students` VALUES (1,'Петр','Самоделкин',234,'123123'),(2,'Евкакий','Быстрый',345,'123123'),(3,'Мирослав','Текучий',342,'123123'),(4,'Сход','Прыгучий',567,'234345'),(5,'Павел','Липкий',566,'456355'),(6,'Михаил','Грязный',455,'455455'),(11,'Антон','Песков',456,'345345'),(12,'Иван','Егерев',456,'123123');
 /*!40000 ALTER TABLE `students` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -102,4 +101,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-26 19:57:33
+-- Dump completed on 2021-05-27 12:32:21

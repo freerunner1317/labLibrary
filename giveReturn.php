@@ -17,7 +17,7 @@
 
 			$query ="INSERT INTO `library`.`students` (`first_name`, `second_name`, `group`, `record_book`) VALUES ('{$_POST['first_name']}', '{$_POST['second_name']}', '{$_POST['group']}', '{$_POST['record_book']}');";
 
-			//$result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
+			$result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
 
 			if ($result) {
 		      echo '<p>Данные успешно добавлены в таблицу.</p>';
@@ -27,20 +27,43 @@
 		}
 
 		if (isset($_POST['student'])){
-			echo $_POST['book_name'];
 			$date = date("Y-m-d");
+			$book_name_split = explode("-", $_POST['book_name']);
+			$quantity = (int)$book_name_split[1];
+			$quantity--;
+			//echo $quantity;
 
-			$query ="INSERT INTO `library`.`books_out` (`data`, `id_book`, `id_students`) 
-					 VALUES ('$date', '2', '{$_POST['student']}');";
+			if ($quantity >= 0){
+				$query = "UPDATE `library`.`books` SET `quantity` = '$quantity' WHERE (`id` = '$book_name_split[0]');";
 
-			echo $query;		 
-			//$result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
+				//echo $query;		 
+				$result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
 
-			if ($result) {
-		      echo '<p>Данные успешно добавлены в таблицу.</p>';
-		    } else {
-		      echo '<p>Произошла ошибка: ' . mysqli_error($link) . '</p>';
-		    }
+				$query ="INSERT INTO `library`.`books_out` (`data`, `id_book`, `id_students`) 
+						 VALUES ('$date', '$book_name_split[0]', '{$_POST['student']}');";	 
+				$result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
+			}else{
+				echo "Книги закончилась, выдача невозможна";
+			}			 
+		}	
+
+		if (isset($_POST['takeBook'])){
+			
+			$book_name_split = explode("-", $_POST['takeBook']);
+			$quantity = (int)$book_name_split[1];
+			$quantity++;
+
+			//var_dump($book_name_split);
+
+			$query = "UPDATE `library`.`books` SET `quantity` = '$quantity' WHERE (`id` = '$book_name_split[2]');";
+
+			//echo $query;		 
+			$result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
+			
+			$query = "DELETE FROM `library`.`books_out` WHERE (`id` = '$book_name_split[0]');";	 
+			$result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link)); 
+
+			if ($result){ echo "Книга принята";}
 		}	
 		// выполняем операции с базой данных
 		$query ="SELECT id, first_name, second_name, students.group 
@@ -62,12 +85,22 @@
 			$books[$key][1] = $value['name'];
 			$books[$key][2] = $value['quantity'];
 		}
-		//var_dump($books);
 
-		// foreach ($students as $key => $value) {
-		// 	echo $value[1];
-		// 	echo "</br>";
-		// }
+		$query ="SELECT books_out.id, books_out.data, books.name, students.first_name, students.second_name, students.group, books.quantity, books_out.id_book 
+				FROM library.books_out, library.books, library.students
+				WHERE books_out.id_book = books.id AND books_out.id_students = students.id";
+		$result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
+
+		foreach ($result as $key => $value) {
+			$books_out[$key][0] = $value['id'];
+			$books_out[$key][1] = $value['data'];
+			$books_out[$key][2] = $value['name'];
+			$books_out[$key][3] = $value['first_name'];
+			$books_out[$key][4] = $value['second_name'];
+			$books_out[$key][5] = $value['group'];
+			$books_out[$key][6] = $value['quantity'];
+			$books_out[$key][7] = $value['id_book'];
+		}
 
 		mysqli_close($link);	  	
 	?>
@@ -95,13 +128,28 @@
 			<select class="box" id="box" name="book_name" value="">
 				<?
 				    foreach ($books as $key => $value) {
-				    	echo "<option value='$value[0]/$value[2]'>$value[1]</option>";	
+				    	echo "<option value='$value[0]-$value[2]'>$value[1]</option>";	
 				    }	   	 		   		
 				?>
 			</select>
 			
 			<p style="text-align: center">
 				<input style="width: 200px; height: 30px;" type="submit" value="Выдать">
+			</p>
+		</form>
+	</div>
+
+	<div class="selectBoxOut">
+		<form method="POST" action="giveReturn.php">
+			<select class="boxOut" id="box" name="takeBook" value="">
+				<?
+				    foreach ($books_out as $key => $value) {
+				    	echo "<option value='$value[0]-$value[6]-$value[7]'>$value[1]; $value[2]; $value[3] $value[4]; $value[5]гр</option>";	
+				    }	   	 		   		
+				?>
+			</select>			
+			<p style="text-align: center">
+				<input style="width: 200px; height: 30px;" type="submit" value="Принять">
 			</p>
 		</form>
 	</div>
