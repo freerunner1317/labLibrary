@@ -12,21 +12,27 @@
 
 	  	$link = mysqli_connect('localhost', 'root', 'root','library') 
 		    or die("Ошибка " . mysqli_error($link));
-		 
-		if (isset($_POST['first_name']) && ($_POST['first_name'] != "Имя")){
-
-			$query ="INSERT INTO `library`.`students` (`first_name`, `second_name`, `group`, `record_book`) VALUES ('{$_POST['first_name']}', '{$_POST['second_name']}', '{$_POST['group']}', '{$_POST['record_book']}');";
-
-			$result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
-
-			if ($result) {
-		      echo '<p>Данные успешно добавлены в таблицу.</p>';
-		    } else {
-		      echo '<p>Произошла ошибка: ' . mysqli_error($link) . '</p>';
-		    }
-		}
-
+//////////
 		if (isset($_POST['student'])){
+			$student_id = $_POST['student'];
+			if (($_POST['student'] == "new") && (isset($_POST['first_name']) && ($_POST['first_name'] != "Имя"))){
+				$query ="INSERT INTO `library`.`students` (`first_name`, `second_name`, `group`, `record_book`) VALUES ('{$_POST['first_name']}', '{$_POST['second_name']}', '{$_POST['group']}', '{$_POST['record_book']}');";
+
+				$result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
+
+				if ($result) {
+			      echo '<p>Данные успешно добавлены в таблицу.</p>';
+			    } else {
+			      echo '<p>Произошла ошибка: ' . mysqli_error($link) . '</p>';
+			    }
+			    $query ="SELECT MAX(id) FROM library.students";
+				$result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
+				$student_id = mysqli_fetch_assoc($result)["MAX(id)"];
+			}elseif(($_POST['first_name'] == "Имя") && ($_POST['student'] == "new")){
+				die("Эй, ты данные введи сначала");
+			}
+
+
 			$date = date("Y-m-d");
 			$book_name_split = explode("-", $_POST['book_name']);
 			$quantity = (int)$book_name_split[1];
@@ -40,12 +46,17 @@
 				$result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
 
 				$query ="INSERT INTO `library`.`books_out` (`data`, `id_book`, `id_students`) 
-						 VALUES ('$date', '$book_name_split[0]', '{$_POST['student']}');";	 
+						 VALUES ('$date', '$book_name_split[0]', '$student_id');";	 
 				$result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
 			}else{
 				echo "Книги закончилась, выдача невозможна";
 			}			 
 		}	
+/////////////
+
+
+
+
 
 		if (isset($_POST['takeBook'])){
 			
@@ -110,15 +121,13 @@
 			<input style="width: 230px; height: 20px;" type="text" name="second_name" value="Фамилия">
 			<input style="width: 70px; height: 20px;" type="text" name="group" value="Группа">
 			<input style="width: 110px; height: 20px;" type="text" name="record_book" value="Номер зачетки">
-			<p style="text-align: center">
+		<!-- 	<p style="text-align: center">
 				<input style="width: 200px; height: 30px;" type="submit" value="Внести студента">
-			</p>
-		</div>	
-	</form>
-
-	<div class="selectBox">
-		<form method="POST" action="giveReturn.php">
+			</p> -->
+		</div>
+		<div class="selectBox">
 			<select class="box" id="box" name="student" value="">
+				<option value='new'>Новый студент</option>
 				<?
 				    foreach ($students as $key => $value) {
 				    	echo "<option value='$value[0]'>$value[1] $value[2]; $value[3] Группа</option>";	
@@ -136,8 +145,9 @@
 			<p style="text-align: center">
 				<input style="width: 200px; height: 30px;" type="submit" value="Выдать">
 			</p>
-		</form>
-	</div>
+		</div>	
+	</form>
+	
 
 	<div class="selectBoxOut">
 		<form method="POST" action="giveReturn.php">
@@ -153,4 +163,5 @@
 			</p>
 		</form>
 	</div>
+	<a href="index.php">Страница выданных </a>
 </html>

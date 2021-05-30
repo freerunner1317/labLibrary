@@ -48,6 +48,7 @@
 		}
 		?>		
 		</tbody>
-	</table>	
+	</table>
+	<a href="giveReturn.php">Страница выдачи добавления</a>	
 	
 </html>
